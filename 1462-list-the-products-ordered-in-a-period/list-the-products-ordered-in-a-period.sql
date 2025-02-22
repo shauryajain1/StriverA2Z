@@ -1,11 +1,1 @@
-SELECT p.product_name, o.unit
-FROM
-(SELECT product_id, SUM(unit) AS unit
-FROM (
-SELECT * FROM Orders
-WHERE YEAR(order_date) = 2020 AND MONTH(order_date) = 2) AS orders
-GROUP BY product_id
-HAVING SUM(unit) > 99) AS o
-LEFT JOIN
-Products p
-ON o.product_id = p.product_id;
+select product_name,sum(unit) as unit from Orders join products using (product_id) where order_date between "2020-02-01" and "2020-02-29" group by product_id having sum(unit)>=100;
