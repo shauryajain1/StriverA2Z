@@ -1,35 +1,31 @@
 class Solution {
     public String longestNiceSubstring(String s) {
-        String result = "";
-        // take first index, go from 0 to length-1 of the string
-		for (int i = 0;i<s.length(); i++){        
-            // take second index, this should go up to the length of the string <=
-			for (int j = i+1;j<=s.length(); j++){
-                //get the substring for the index range from i to j
-				String temp = s.substring(i, j);
-                // if length of the substring should be greater than 1
-				// if the length should be greater that the previous computed result
-				// if the substring is valid Nice String
-				// then update the result with the current substring from range i and j
-				if (temp.length() > 1 && result.length() < temp.length() && checkNice(temp)) result = temp;
-            }    
+        if (s.length() < 2) return ""; // A single character can't be nice
+
+        // Use a set to store all characters in the string
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (s.contains(Character.toString(Character.toUpperCase(c))) &&
+                s.contains(Character.toString(Character.toLowerCase(c)))) {
+                continue; // This character is fine
+            }
+
+            // Split into left and right substrings and recurse
+            String left = longestNiceSubstring(s.substring(0, i));
+            String right = longestNiceSubstring(s.substring(i + 1));
+
+            // Return the longer of the two
+            return left.length() >= right.length() ? left : right;
         }
-        return result;
+
+        return s; // If the entire string is nice, return it
     }
-    
-	//validate Nice String check
-    public boolean checkNice(String temp){
-        //add substring to the set
-		Set<Character> s = new HashSet<>();
-        for (char ch : temp.toCharArray()) s.add(ch);
-        
-		// return false If you do not find both lower case and upper case in the sub string
-		//for e.g 'aAa' substring added to set will have both a and A in the substring which is valid
-		// 'azaA' substring will fail for 'z'
-		// 'aaaaaaaa' will return "" as result
-		//make sure that the substring contains both lower and upper case
-        for (char ch : s)
-            if (s.contains(Character.toUpperCase(ch)) != s.contains(Character.toLowerCase(ch))) return false;  
-        return true;
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+
+        System.out.println(solution.longestNiceSubstring("YazaAay")); // Output: "aAa"
+        System.out.println(solution.longestNiceSubstring("Bb"));      // Output: "Bb"
+        System.out.println(solution.longestNiceSubstring("c"));       // Output: ""
     }
 }
