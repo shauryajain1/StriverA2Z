@@ -14,34 +14,24 @@
  * }
  */
 class Solution {
+    private int indx=0;
+    private HashMap<Integer,Integer> map=new HashMap<>();
     public TreeNode buildTree(int[] preorder, int[] inorder) {
-        Deque<Integer> preorderQueue = new ArrayDeque<>();
-        for (int val : preorder) {
-            preorderQueue.offer(val);
+        for(int i=0;i<inorder.length;i++){
+            map.put(inorder[i],i);    //stores the values of inorder 
         }
-
-        return build(preorderQueue, inorder);        
+        return build(preorder,0,inorder.length-1);
     }
+    public TreeNode build(int[] preorder,int start,int end){
+        if(start>end) return null;
+        int rootval=preorder[indx++];
+        TreeNode root=new TreeNode(rootval);
 
-    private TreeNode build(Deque<Integer> preorder, int[] inorder) {
-        if (inorder.length > 0) {
-            int idx = indexOf(inorder, preorder.poll());
-            TreeNode root = new TreeNode(inorder[idx]);
+        int ind=map.get(rootval);
 
-            root.left = build(preorder, Arrays.copyOfRange(inorder, 0, idx));
-            root.right = build(preorder, Arrays.copyOfRange(inorder, idx + 1, inorder.length));
-
-            return root;
-        }
-        return null;
+        root.left=build(preorder,start,ind-1);
+        root.right=build(preorder,ind+1,end);
+        return root;
+        
     }
-
-    private int indexOf(int[] arr, int value) {
-        for (int i = 0; i < arr.length; i++) {
-            if (arr[i] == value) {
-                return i;
-            }
-        }
-        return -1; // shouldn't happen with valid input
-    }    
 }
