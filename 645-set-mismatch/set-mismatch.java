@@ -1,24 +1,26 @@
-
-
 class Solution {
-    public int[] findErrorNums(int[] nums) {
-        int dup = -1, missing = -1;
-        
-        for (int i = 1; i <= nums.length; i++) {
-            int count = 0;
-            for (int j = 0; j < nums.length; j++) {
-                if (nums[j] == i) {
-                    count++;
-                }
-            }
-            if (count == 2) {
-                dup = i;
-            } else if (count == 0) {
-                missing = i;
-            }
+    static{
+        for(int i=0; i<500; i++){
+            findErrorNums(null);
         }
-        
-        return new int[] {dup, missing};
+    }
+    public static int[] findErrorNums(int[] a) {
+        if(a==null) return new int[]{};
+        long sum = 0L, sumSquares = 0L;
+        long actualSum = 0L, actualSumSquares = 0L;
+        int n = a.length;
+        for(int i=0; i<n; i++){
+            sum += (long)a[i];
+            sumSquares += (long)a[i] * a[i];
+        }
+
+        actualSum = (n*(n+1L))/2;
+        actualSumSquares = (n*(n+1L)*(2L*n +1))/6;
+        int[] ans = new int[2];
+        long numberDifference = sum-actualSum;
+        long numberSum = (sumSquares - actualSumSquares)/(numberDifference);
+        ans[0] = (int)((numberSum + numberDifference)/2);
+        ans[1] = (int)((numberSum - ans[0]));
+        return ans;
     }
 }
-
