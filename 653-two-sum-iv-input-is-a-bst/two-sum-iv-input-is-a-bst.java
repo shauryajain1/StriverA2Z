@@ -14,27 +14,31 @@
  * }
  */
 class Solution {
-    HashSet<Integer>hs = new HashSet<>();
-    int tar;
     public boolean findTarget(TreeNode root, int k) {
-       
-        this.tar = k;
-        return  findTarget(root);
+        return checkSum(root, root, k);
     }
-    public boolean findTarget(TreeNode root)
-    {
-        if(root == null)
-        {
-            return false;
+
+    public boolean checkSum(TreeNode node, TreeNode root, int target){
+        if(node == null) return false;
+        int diff = target - node.val;
+
+        if(diff < node.val){
+            if (search(root.left, diff, node)) return true;
+        }
+        if(diff > node.val){
+            if (search(root.right, diff, node)) return true;
         }
 
-        boolean l = findTarget(root.left);
-        boolean r = findTarget(root.right);
-        if(hs.contains(tar-root.val))
-        {
-            return true;
-        }
-        hs.add(root.val);
-        return l ||  r;
+        return checkSum(node.left, root, target) || checkSum(node.right, root, target);
+
     }
+
+    public boolean search(TreeNode node, int target, TreeNode ignoreNode){
+        while(node != null){
+            if(node.val == target && node != ignoreNode)return true;
+            node = target < node.val ? node.left : node.right;
+        }
+        return false;
+    }
+
 }
