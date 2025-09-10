@@ -1,20 +1,18 @@
-import java.util.Arrays;
+import java.util.*;
 
-public class Solution {
-    public int minimumBoxes(int[] a, int[] c) {
-        int ans = 0;
-        int s = Arrays.stream(a).sum();
-        Arrays.sort(c);
-
-        int i = c.length - 1;
-        while (i >= 0) {
-            s -= c[i];
-            ans++;
-            if (s <= 0)
-                break;
-            i--;
+class Solution {
+    public int minimumBoxes(int[] apple, int[] capacity) {
+        int sum = 0;
+        for (int num : apple) {
+            sum += num;
         }
-
-        return ans;
+        Arrays.sort(capacity);  
+        int count = 0;
+        for (int i = capacity.length - 1; i >= 0; i--) {
+            sum -= capacity[i];
+            count++;
+            if (sum <= 0) break;
+        }
+        return count;
     }
 }
