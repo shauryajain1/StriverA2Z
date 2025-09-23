@@ -1,12 +1,18 @@
 class ParkingSystem {
 
-        int[] count;
+    int[] availableParkingSpots;
+    
     public ParkingSystem(int big, int medium, int small) {
-        count = new int[]{big, medium, small};
+        availableParkingSpots = new int[] {big,medium,small};
     }
-
+    
     public boolean addCar(int carType) {
-        return count[carType - 1]-- > 0;
+        if(availableParkingSpots[carType-1] > 0){
+            availableParkingSpots[carType-1]--;
+            return true;
+        }else{
+            return false;
+        }
     }
 }
 
