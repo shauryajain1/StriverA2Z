@@ -1,15 +1,12 @@
 class Solution {
     public int subtractProductAndSum(int n) {
-        int diff=0;
-        int pro=1,sum=0;
-        while(n!=0)
-        {
-            int d=n%10;
-            pro*=d;
-            sum+=d;
-            n=n/10;
+        int sum = 0, product = 1;
+        while(n > 0){
+            int s = n%10;
+            sum += s;
+            product *= s;
+            n/= 10;
         }
-        diff=pro-sum;
-        return diff;
+        return product - sum;
     }
 }
